@@ -409,12 +409,17 @@ const input = {
   ],
 };
 
+var pushListIds = function (index, array, listIds) {
+  if (index < array.length) {
+    listIds.push(array[index].listId);
+    pushListIds(index + 1, array, listIds);
+  }
+};
+
 function subdomainLogger(index, subDomainArr, listIds) {
   if (index < subDomainArr.length) {
     if (subDomainArr[index].list) {
-      subDomainArr[index].list.forEach((element) => {
-        listIds.push(element.listId);
-      });
+      pushListIds(0, subDomainArr[index].list, listIds);
     }
 
     if (subDomainArr[index].children) {
@@ -428,9 +433,7 @@ function subdomainLogger(index, subDomainArr, listIds) {
 var domainLogger = function (index, domainArr, listIds) {
   if (index < domainArr.length) {
     if (domainArr[index].list) {
-      domainArr[index].list.forEach((element) => {
-        listIds.push(element.listId);
-      });
+      pushListIds(0, domainArr[index].list, listIds);
     }
 
     if (domainArr[index].children) {
