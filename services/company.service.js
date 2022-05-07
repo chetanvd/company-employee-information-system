@@ -145,6 +145,17 @@ class CompanyService {
         let comapanySnapshot = await companyRef.get();
 
         if (comapanySnapshot.exists) {
+          let employeeRef = this.db.collection(collectionName.EMPLOYEE);
+          let employeeSnapshot = await employeeRef
+            .where('company_id', '==', data.COMPANY_ID)
+            .get();
+
+          if (employeeSnapshot.docs.length > 0) {
+            for (let employeeDoc of employeeSnapshot.docs) {
+              await employeeRef.doc(employeeDoc.id).delete();
+            }
+          }
+
           await companyRef.delete();
           return resolve({
             status: true,

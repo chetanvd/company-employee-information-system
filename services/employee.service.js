@@ -210,10 +210,10 @@ class EmployeeService {
         }
 
         if (Object.keys(employeeDetails).length) {
-          employeeDetails = await this.getSubordinatesAndManager(
-            employeeDetails,
-            employeeRef
-          );
+          // employeeDetails = await this.getSubordinatesAndManager(
+          //   employeeDetails,
+          //   employeeRef
+          // );
           console.log(employeeDetails);
           return resolve(employeeDetails);
         } else {
@@ -267,13 +267,23 @@ class EmployeeService {
     return new Promise(async (resolve, reject) => {
       try {
         let employeeId = data.EMPLOYEE_ID;
-        let employeeRef = this.db
-          .collection(collectionName.EMPLOYEE)
-          .doc(employeeId);
-        let employeeSnapshot = await employeeRef.get();
+        let employeeRef = this.db.collection(collectionName.EMPLOYEE);
+
+        let employeeSnapshot = await employeeRef.doc(employeeId).get();
 
         if (employeeSnapshot.exists) {
-          await employeeRef.delete();
+          let employeeSnapshot = await employeeRef
+            .where('reporting_manager_id', '==', employeeId)
+            .get();
+
+          if (employeeSnapshot.docs.length > 0) {
+            for (let employeeDoc of employeeSnapshot.docs) {
+              let employeeDetail = employeeDoc.data();
+              employeeDetail.reporting_manager_id = '';
+              await employeeRef.doc(employeeDoc.id).update(employeeDetail);
+            }
+          }
+          await employeeRef.doc(employeeId).delete();
           return resolve({
             status: true,
             message: `EMPLOYEE DATA of employee_id : ${employeeId}, Deleted successfully.`,

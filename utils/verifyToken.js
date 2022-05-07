@@ -44,6 +44,6 @@ module.exports = async (req, res, next) => {
     }
   } catch (err) {
     console.log('err', err);
-    return res.status(401).send({ status: false, message: 'Invalid Token' });
+    return res.status(401).send({ status: false, message: '' + err });
   }
 };
