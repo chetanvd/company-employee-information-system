@@ -65,3 +65,5 @@ node_modules/
 # Node modules
 node_modules/
 
+# Db access json file
+company-employee-info-system-firebase-adminsdk-1ukxq-c2da848ae1.json
