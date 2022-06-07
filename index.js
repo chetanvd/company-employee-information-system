@@ -1,24 +1,19 @@
 const Express = require('express');
 const app = Express();
 const bodyParser = require('body-parser');
-require('dotenv').config();
+
+const port = process.env.PORT || '8088';
 
 //Importing ROUTES
 const adminRoute = require('./routes/admin.route');
-const companyRoute = require('./routes/company.route');
-const employeeRoute = require('./routes/employee.route');
+const utilRoute = require('./routes/util.route');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/api/v1/admin-service', adminRoute);
-app.use('/api/v1/company-service', companyRoute);
-app.use('/api/v1/employee-service', employeeRoute);
+app.use('/api/v1/util-service', utilRoute);
 
-app.listen(process.env.port, () => {
-  console.info(
-    `v${process.env.version} - listening on http://localhost:${process.env.port}`
-  );
+app.listen(port, () => {
+  console.info(`Server started on PORT : ${port}`);
 });
-
-module.exports = app;

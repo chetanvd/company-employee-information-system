@@ -10,13 +10,6 @@ const statusCode = Object.freeze({
   internal_server_error: 500,
 });
 
-const collectionName = Object.freeze({
-  COMPANY: 'companies',
-  EMPLOYEE: 'employees',
-  ADMIN: 'admin',
-});
-
 module.exports = {
   statusCode,
-  collectionName,
 };
