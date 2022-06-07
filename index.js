@@ -4,7 +4,6 @@ const bodyParser = require('body-parser');
 
 const port = process.env.PORT || '8088';
 
-//Importing ROUTES
 const adminRoute = require('./routes/admin.route');
 const utilRoute = require('./routes/util.route');
 
